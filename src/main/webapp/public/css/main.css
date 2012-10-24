@@ -1,5 +1,5 @@
 body {
-  background: #aaa;
+  background:url(../img/brown60.jpg);
   font-family: Verdana, sans-serif;
   font-size: 12px;
 }
@@ -7,7 +7,7 @@ body {
 #outer {
   width: 640px;
   border-radius: 6px;
-  background: #eee;
+  background: url(../img/f3lhi69.png);
   margin: 0 auto;
   padding: 16px;
 }

@@ -18,7 +18,6 @@ class Main extends Router {
       flash.update("msg", msg.fmt(e.getMessage))//("user.not.found"))
       sendRedirect("/auth/login")
   }
-
 }
 
 class BookRouter extends Router {

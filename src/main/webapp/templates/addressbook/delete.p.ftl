@@ -19,25 +19,6 @@ ${msg['user.delete.message']}
   <hr>
   <address>
     <strong>
-    ${msg['user.telephone']!}:
-    </strong><br>
-  ${contact.telephone}
-  </address>
-  <hr>
-  <address>
-    <strong>${msg['user.address']!}:
-    </strong><br>
-  ${contact.address}
-  </address>
-  <hr>
-  <address>
-    <strong>${msg['user.comment']!}:
-    </strong><br>
-  ${contact.comment}
-  </address>
-  <hr>
-  <address>
-    <strong>
     ${msg['user.email']!}:
     </strong><br>
   ${contact.mail}
@@ -49,7 +30,10 @@ ${msg['user.delete.message']}
   <input type="hidden" name="_method" value="delete"/>
   <div class="control-group">
     <div class="controls">
-      <button type="submit" class="btn">${msg['user.button.delete']}</button>
+      <button type="submit"
+              class="btn">
+      ${msg['user.button.delete']}
+      </button>
     </div>
   </div>
 </form>

@@ -1,4 +1,0 @@
-[#ftl]
-
-
-[#include "../layout.ftl"/]
