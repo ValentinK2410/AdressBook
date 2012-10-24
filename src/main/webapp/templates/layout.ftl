@@ -11,25 +11,24 @@
     <link rel="stylesheet"
           type="text/css"
           media="screen"
-          href="/css/bootstrap.css"/>
+          href="/css/bootstrap.min.css"/>
     <link rel="stylesheet"
           type="text/css"
           media="screen"
-          href="/css/bootstrap.min.css"/>
-    <link rel="stylesheet"
-          href="colorbox.css" />
+          href="/css/colorbox.css"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
     <script src="/js/jquery.colorbox.js"></script>
     <title>Simple Circumflex Application</title>
   </head>
-  <body>
+   <body>
+
+   <script type="text/javascript">
+     $(function () {
+       $('a[rel=popup]').colorbox();
+     });
+   </script>
   <div id="header">
   </div>
-
-  <div>
-
-  </div>
-
   <div id="outer">
     <div id="content">
       <div id="registration">

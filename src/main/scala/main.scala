@@ -90,7 +90,6 @@ class BookRouter extends Router {
 
     get("/~delete")
         .and(request.body.isXHR) = ftl("/addressbook/delete.p.ftl")
-
     delete("/?") = {
       contact.DELETE_!()
       flash.update("msg", msg.fmt("user.book.deleted"))
@@ -98,7 +97,6 @@ class BookRouter extends Router {
     }
   }
 }
-
 class AuthRouter extends Router {
 
   get("/login") = ftl("/auth/login.ftl")
