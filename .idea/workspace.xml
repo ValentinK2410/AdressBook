@@ -2,13 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f006d080-b689-45f5-9c5e-538f0a2e8eb9" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/templates/addressbook/delete.p.ftl" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/Messages.properties" afterPath="$PROJECT_DIR$/src/main/resources/Messages.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/main.scala" afterPath="$PROJECT_DIR$/src/main/scala/main.scala" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/templates/addressbook/list.ftl" afterPath="$PROJECT_DIR$/src/main/webapp/templates/addressbook/list.ftl" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/templates/layout.ftl" afterPath="$PROJECT_DIR$/src/main/webapp/templates/layout.ftl" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test.h2.db" afterPath="$PROJECT_DIR$/test.h2.db" />
     </list>
     <ignored path="test.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -78,7 +72,7 @@
       <file leaf-file-name="list.ftl" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/webapp/templates/addressbook/list.ftl">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="13" column="31" selection-start="347" selection-end="347" vertical-scroll-proportion="0.3018576">
+            <state line="14" column="67" selection-start="394" selection-end="394" vertical-scroll-proportion="0.28018576">
               <folding />
             </state>
           </provider>
@@ -736,7 +730,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/webapp/templates/addressbook/list.ftl">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="31" selection-start="347" selection-end="347" vertical-scroll-proportion="0.3018576">
+        <state line="14" column="67" selection-start="394" selection-end="394" vertical-scroll-proportion="0.28018576">
           <folding />
         </state>
       </provider>

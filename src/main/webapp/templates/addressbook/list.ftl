@@ -9,19 +9,25 @@
         <tr>
           <td>${e.title}</td>
           <td>${e.mail}</td>
-          <td><a class="btn"
-                 href="/book/${e.id}">
-            <i class="icon-list"></i>${msg['user.button.review']}
-          </a>
+          <td>
+            <a class="btn"
+               href="/book/${e.id}">
+              <i class="icon-list"></i>${msg['user.button.review']}
+            </a>
           </td>
-          <td><a class="btn"
-                 href="/book/${e.id}/edit">
-            <i class="icon-pencil"></i>${msg['user.button.edit']}
-          </a>
+          <td>
+            <a class="btn"
+               href="/book/${e.id}/edit">
+              <i class="icon-pencil"></i>${msg['user.button.edit']}
+            </a>
           </td>
-          <td><a class="btn" href="">
-            <i class="icon-remove"></i>${msg['user.button.delete']}
-          </a></td>
+          <td>
+            <a class="btn"
+               rel="popup"
+               href="/book/${e.id}/~delete">
+              <i class="icon-remove"></i>${msg['user.button.delete']}
+            </a>
+          </td>
         </tr>
       [/#list]
     [#else]
