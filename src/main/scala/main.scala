@@ -37,7 +37,7 @@ class BookRouter extends Router {
         flash.update("errors", e.errors)
         sendRedirect("/book/~new")
     }
-    flash.update("msg", msg.fmt("user.book.new.added"))
+    flash.update("msg", msg.fmt("user.book.added"))
     sendRedirect("/book")
   }
 

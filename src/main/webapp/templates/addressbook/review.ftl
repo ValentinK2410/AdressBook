@@ -4,7 +4,7 @@
 
 [#assign content]
 
-<div class="panell well well-small">
+<div class="bo form-actions">
 <address>
   <strong>
   ${msg['user.firstname']!}:
