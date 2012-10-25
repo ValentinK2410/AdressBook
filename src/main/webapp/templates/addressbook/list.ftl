@@ -12,7 +12,7 @@
           <td>
             <a class="btn"
                href="/book/${e.id}">
-              <i class="icon-list"></i>${msg['user.button.review']}
+              <i class="icon-list"></i>${msg['user.button.view']}
             </a>
           </td>
           <td>

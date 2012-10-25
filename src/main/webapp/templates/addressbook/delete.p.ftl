@@ -27,7 +27,9 @@ ${msg['user.delete.message']}
 <form class="form-horizontal"
       action="/book/${contact.id}"
       method="post">
-  <input type="hidden" name="_method" value="delete"/>
+  <input type="hidden"
+         name="_method"
+         value="delete"/>
   <div class="control-group">
     <div class="controls">
       <button type="submit"

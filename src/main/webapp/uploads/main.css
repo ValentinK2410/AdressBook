@@ -1,0 +1,37 @@
+body {
+  background:url(../img/outer_background.png);
+  font-family: Verdana, sans-serif;
+  font-size: 12px;
+}
+
+#outer {
+  width: 640px;
+  border-radius: 6px;
+  background: url(../img/f3lhi69.png);
+  margin: 0 auto;
+  padding: 16px;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.75), inset 0 1px 0 white;
+}
+
+h1 {
+  margin:4px 0;
+  font-size:1.5em;
+}
+
+pre {
+  margin:0;
+  border:1px solid #777;
+  padding:8px;
+  background:#fff;
+}
+
+#footer {
+  text-align: center;
+}
+.panell{
+  border-radius: 8px;
+  -webkit-box-shadow: 0 1px 5px rgba(0,0,0,0.75), inset 0 1px 0 white;
+  -moz-box-shadow: 0 1px 5px rgba(0,0,0,0.75), inset 0 1px 0 white;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.75), inset 0 1px 0 white;
+}
+.bo{box-shadow: 0 1px 5px rgba(0,0,0,0.75), inset 0 1px 0 white;}

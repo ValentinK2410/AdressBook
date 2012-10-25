@@ -7,7 +7,7 @@ package com.example
  * To change this template use File | Settings | File Templates.
  */
 
-import ru.circumflex._, core._, orm._, web._
+import ru.circumflex._, core._, orm._, web._, markeven._
 
 class Book
     extends Record[Long, Book]
@@ -20,12 +20,12 @@ class Book
   val lastName = "lastname".TEXT
   val mail = "mail".TEXT
   val user = "user_id".BIGINT.NOT_NULL
-      .REFERENCES(User1)
+      .REFERENCES(User)
       .ON_DELETE(CASCADE)
       .ON_UPDATE(CASCADE)
 
   def title = lastName() + " " + firstName()
-
+  def marcComment = toHtml(comment())
 
   def PRIMARY_KEY = id
   def relation = Book
@@ -44,7 +44,7 @@ object Book
       .pattern(_.firstName,"^([a-zA-Z0-9_.-]){2,}|[А-Я][а-я]{2,}$".r.pattern)
       .pattern(_.lastName,"^([a-zA-Z0-9_.-]){2,}|[А-Я][а-я]{2,}$".r.pattern)
 
-  def findByUser(user: User1) = {
+  def findByUser(user: User) = {
     SELECT(bk.*)
         .FROM(bk)
         .add(bk.user IS user)

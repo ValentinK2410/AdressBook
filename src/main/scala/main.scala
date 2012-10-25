@@ -2,6 +2,7 @@ package com.example
 
 
 import java.util.Date
+import java.io.File
 import ru.circumflex._, core._, web._, freemarker._, orm._
 
 
@@ -14,9 +15,12 @@ class Main extends Router {
     sub("/book") = new BookRouter
     sub("/auth") = new AuthRouter
   } catch {
-    case e: Exception  =>
-      flash.update("msg", msg.fmt(e.getMessage))//("user.not.found"))
+    case e: IllegalStateException  =>
+      flash.update("msg", msg.fmt("user.not.found"))
       sendRedirect("/auth/login")
+    case er: Exception  =>
+      flash.update("msg", msg.fmt(er.getMessage))
+      sendRedirect("/book/error")
   }
 }
 
@@ -41,7 +45,21 @@ class BookRouter extends Router {
     sendRedirect("/book")
   }
 
+  get("/files") = {
+
+    //sendFile(new File(uploadsRoot,"main.css"))
+    val filesHere = (new java.io.File(uploadsRoot,".")).listFiles
+    def Files = {
+    for {file <- filesHere
+    } yield file.getName
+    }
+    'Filess := Files
+    ftl("/uploads/list.ftl")
+  }
+
   get("/~new") = ftl("/addressbook/new.ftl")
+
+  get("/error") = ftl("/err/error.ftl")
 
   sub("/:id") = {
     val contact = try {
@@ -55,7 +73,7 @@ class BookRouter extends Router {
     if (contact.user() != currentUser)
       sendError(404)
 
-    get("/?") = ftl("/addressbook/review.ftl")
+    get("/?") = ftl("/addressbook/view.ftl")
 
     get("/edit") = ftl("/addressbook/edit.ftl")
 
@@ -94,7 +112,9 @@ class BookRouter extends Router {
       flash.update("msg", msg.fmt("user.book.deleted"))
       sendRedirect("/book")
     }
+
   }
+
 }
 class AuthRouter extends Router {
 
@@ -104,7 +124,7 @@ class AuthRouter extends Router {
   post("/login") = {
     val login = param("log")
     val pass = param("pass")
-    val user = User1.findByLogin(login, pass)
+    val user = User.findByLogin(login, pass)
     if (user.isEmpty) {
       flash.update("msg", msg.fmt("user.login.failed"))
       sendRedirect("/auth/login")
@@ -124,7 +144,7 @@ class AuthRouter extends Router {
   // sub "/auth"
   post("/signup") = {
     try {
-      val u = User1.createFromParams()
+      val u = User.createFromParams()
       u.save()
     } catch {
       case e: ValidationException =>

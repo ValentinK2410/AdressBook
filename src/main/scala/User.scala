@@ -9,9 +9,9 @@ package com.example
 
 import ru.circumflex._, core._, orm._, web._
 
-class User1
-    extends Record[Long, User1]
-    with IdentityGenerator[Long, User1] {
+class User
+    extends Record[Long, User]
+    with IdentityGenerator[Long, User] {
   val id = "id".BIGINT.NOT_NULL.AUTO_INCREMENT
   val login = "login".TEXT
   val password = "password".TEXT
@@ -19,14 +19,14 @@ class User1
 
 
   def PRIMARY_KEY = id
-  def relation = User1
+  def relation = User
 
 }
 
-object User1
-    extends User1
-    with Table[Long, User1] {
-  val us = User1 AS "us"
+object User
+    extends User
+    with Table[Long, User] {
+  val us = User AS "us"
 
   val loginUnique = UNIQUE(login)
   val mailUnique = UNIQUE(mail)
@@ -53,7 +53,7 @@ object User1
   }
 
   def createFromParams() = {
-    val u = new User1
+    val u = new User
     u.login := param("log")
     // TODO Check password
     if (param("pass") != param("old-pass"))

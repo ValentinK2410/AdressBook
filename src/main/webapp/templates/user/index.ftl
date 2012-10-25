@@ -24,7 +24,7 @@
   </p>
 
   <input type="submit"
-         value="${msg['send']}">
+         value="${msg['user.button.send']}">
 </form>
 [/#assign]
 

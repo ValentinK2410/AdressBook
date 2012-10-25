@@ -18,7 +18,7 @@
           href="/css/colorbox.css"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
     <script src="/js/jquery.colorbox.js"></script>
-    <title>Simple Circumflex Application</title>
+    <title>${msg['title']}</title>
   </head>
    <body>
 
@@ -32,9 +32,7 @@
   <div id="outer">
     <div id="content">
       <div id="registration">
-        <!--<a class="group2 cboxElement" href="/book" title="Me">Grouped Photo 1</a> -->
-
-        <div class="user">
+         <div class="user">
 
         [#if session['principal']??]
           <a href="/book/~new">${msg['user.addressbook.add']}</a>
@@ -60,10 +58,10 @@
 
           <div class="user" >
           [#if session['principal']??]
-            <a class="btn btn-danger"   href="/auth/logout">${msg['user.logout.href']}</a>
+            <a class="linc btn-danger"   href="/auth/logout">${msg['user.logout.href']}</a>
           ${session['principal'].login!}
           [#else]
-            <a class="btn btn-success"   href="/auth/login">${msg['user.login.href']}</a>
+           <!-- <a class="linc btn-success"   href="/auth/login">${msg['user.login.href']}</a> -->
           [/#if]
           </div>
 

@@ -6,41 +6,41 @@
 
 <div class="bo form-actions">
 <address>
-  <strong>
+  <p><strong>
   ${msg['user.firstname']!}:
-  </strong><br>
-${contact.firstName}
+  </strong></p>
+  <p>${contact.firstName}</p>
 </address>
   <hr>
 <address>
-  <strong> ${msg['user.lastname']!}:
-  </strong><br>
+  <p><strong> ${msg['user.lastname']!}:
+  </strong></p>
 ${contact.lastName}
 </address>
   <hr>
 <address>
-  <strong>
+  <p><strong>
   ${msg['user.telephone']!}:
-  </strong><br>
+  </strong></p>
 ${contact.telephone}
 </address>
   <hr>
 <address>
-  <strong>${msg['user.address']!}:
-  </strong><br>
+  <p></p><strong>${msg['user.address']!}:
+  </strong><p>
 ${contact.address}
 </address>
   <hr>
 <address>
-  <strong>${msg['user.comment']!}:
-  </strong><br>
-${contact.comment}
+  <p></p><strong>${msg['user.comment']!}:
+  </strong><p>
+${contact.marcComment}
 </address>
   <hr>
 <address>
-  <strong>
+  <p></p><strong>
   ${msg['user.email']!}:
-  </strong><br>
+  </strong><p>
 ${contact.mail}
 </address>
  </div>
