@@ -1,7 +1,7 @@
 package com.example
 import java.io.File
 
-import ru.circumflex._, xml._
+import ru.circumflex._, xml._ ,core._
 import core._
 import web._
 
@@ -26,6 +26,8 @@ class XmlDescriptionFile(@transient val files: XmlFiles)
 
   val _name = attr("name")
   def name = _name.getOrElse("")
+
+  def ud = randomUUID
 }
 
 class XmlFiles

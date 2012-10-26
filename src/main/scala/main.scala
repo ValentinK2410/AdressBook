@@ -118,6 +118,10 @@ class BookRouter extends Router {
     get("/uploads") = ftl("/uploads/add.ftl")
 
     post("/uploads").and(request.body.isMultipart) = {
+      val files = new XmlFiles
+      files.load()
+      val file = new XmlDescriptionFile(files)
+
       val items = request.body.parseFileItems(
         new DiskFileItemFactory(10240, new File(uploadsRoot, "tmp"))
       )
@@ -131,6 +135,7 @@ class BookRouter extends Router {
       ctx.getAs[FileItem]("file").map { fi =>
         // upload file
         fi.write(new File(uploadsRoot,param("date") + fi.getName))
+
       }
       ftl("/uploads/add.ftl")
     }
