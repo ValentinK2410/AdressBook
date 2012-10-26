@@ -3,10 +3,10 @@ package com.example
 
 import java.util.Date
 import java.io.File
-import ru.circumflex._, core._, web._, freemarker._, orm._
+import ru.circumflex._, core._, web._, freemarker._, orm._, xml._
 import org.apache.commons.fileupload._
 import disk.DiskFileItemFactory
-import servlet.ServletFileUpload
+
 
 
 class Main extends Router {
@@ -132,30 +132,6 @@ class BookRouter extends Router {
         // upload file
         fi.write(new File(uploadsRoot,param("date") + fi.getName))
       }
-
-      /* // Create a factory for disk-based file items
-      val userfile = param("userfile")
-      val factory = new DiskFileItemFactory();
-      val upload = new ServletFileUpload(factory);
-
-      try {
-        val items = upload.parseRequest(userfile)
-        val iterator = items.iterator()
-        while (iterator.hasNext()) {
-          val item = iterator.next()
-
-          if (!item.isFormField()) {
-            val fileName = item.getName()
-            val uploadedFile = new File(uploadsRoot + "/" + fileName)
-            item.write(uploadedFile)
-          }
-        }
-      } catch{
-        case e:FileUploadException => e.printStackTrace()
-        case e1:Exception => e.printStackTrace()
-      }
-
-      */
       ftl("/uploads/add.ftl")
     }
   }
@@ -201,5 +177,4 @@ class AuthRouter extends Router {
 
   }
 }
-
 

@@ -2,7 +2,12 @@
 
 [#assign content]
 <h2>${msg['user.files.add']}</h2>
-
+ <p>${xml!} </p><hr>
+[#if xml1??]
+  [#list xml1 as x]
+    ${x}
+  [/#list]
+[/#if]
 <FORM ENCTYPE="multipart/form-data"
       ACTION="/book/${contact.id}/uploads"
       METHOD=POST>
