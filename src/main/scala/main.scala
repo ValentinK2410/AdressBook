@@ -4,7 +4,9 @@ package com.example
 import java.util.Date
 import java.io.File
 import ru.circumflex._, core._, web._, freemarker._, orm._
-
+import org.apache.commons.fileupload._
+import disk.DiskFileItemFactory
+import servlet.ServletFileUpload
 
 
 class Main extends Router {
@@ -50,8 +52,8 @@ class BookRouter extends Router {
     //sendFile(new File(uploadsRoot,"main.css"))
     val filesHere = (new java.io.File(uploadsRoot,".")).listFiles
     def Files = {
-    for {file <- filesHere
-    } yield file.getName
+      for {file <- filesHere
+      } yield file.getName
     }
     'Filess := Files
     ftl("/uploads/list.ftl")
@@ -113,8 +115,50 @@ class BookRouter extends Router {
       sendRedirect("/book")
     }
 
-  }
+    get("/uploads") = ftl("/uploads/add.ftl")
 
+    post("/uploads").and(request.body.isMultipart) = {
+      val items = request.body.parseFileItems(
+        new DiskFileItemFactory(10240, new File(uploadsRoot, "tmp"))
+      )
+      // Process the uploaded items
+      items.map { fi =>
+        if (fi.isFormField) ctx.update(fi.getFieldName, fi.getString("utf-8"))
+        else ctx.update(fi.getFieldName, fi)
+      }
+
+      // process File
+      ctx.getAs[FileItem]("file").map { fi =>
+        // upload file
+        fi.write(new File(uploadsRoot,param("date") + fi.getName))
+      }
+
+      /* // Create a factory for disk-based file items
+      val userfile = param("userfile")
+      val factory = new DiskFileItemFactory();
+      val upload = new ServletFileUpload(factory);
+
+      try {
+        val items = upload.parseRequest(userfile)
+        val iterator = items.iterator()
+        while (iterator.hasNext()) {
+          val item = iterator.next()
+
+          if (!item.isFormField()) {
+            val fileName = item.getName()
+            val uploadedFile = new File(uploadsRoot + "/" + fileName)
+            item.write(uploadedFile)
+          }
+        }
+      } catch{
+        case e:FileUploadException => e.printStackTrace()
+        case e1:Exception => e.printStackTrace()
+      }
+
+      */
+      ftl("/uploads/add.ftl")
+    }
+  }
 }
 class AuthRouter extends Router {
 

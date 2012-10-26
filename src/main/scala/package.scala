@@ -5,6 +5,8 @@ import ru.circumflex._, core._, web._
 package object example {
   val log = new Logger("com.example")
 
+
+
   val uploadsRoot = new File(
     cx.getString("uploads.root")
         .getOrElse("src/main/webapp/uploads")

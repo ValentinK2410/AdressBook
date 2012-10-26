@@ -8,9 +8,8 @@
       [#list contacts as e]
         <tr>
           <td>${e.title}</td>
-          <td>${e.mail}</td>
           <td>
-            <a class="btn"
+           <a class="btn"
                href="/book/${e.id}">
               <i class="icon-list"></i>${msg['user.button.view']}
             </a>
@@ -26,6 +25,12 @@
                rel="popup"
                href="/book/${e.id}/~delete">
               <i class="icon-remove"></i>${msg['user.button.delete']}
+            </a>
+          </td>
+          <td>
+            <a class="btn"
+               href="/book/${e.id}/uploads">
+              <i class="icon-upload"></i>${msg['user.button.upload']}
             </a>
           </td>
         </tr>
