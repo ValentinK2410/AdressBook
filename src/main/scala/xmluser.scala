@@ -27,7 +27,6 @@ class XmlDescriptionFile(@transient val files: XmlFiles)
   val _name = attr("name")
   def name = _name.getOrElse("")
 
-  def ud = randomUUID
 }
 
 class XmlFiles
@@ -44,12 +43,14 @@ class XmlFiles
   }
 }
 
-class CreateUserFile(pathFile: String){
+class CreateDirFile(f: File){
+  def ud = randomUUID
+  def nameFile = f + "/" + ud
 
   def createPath = {
-  val f = new File(pathFile)
-  try{
-   f.mkdirs()
+   try{
+    if (f.isDirectory)
+    f.mkdirs()
   }catch{
     case er: Exception  =>
       flash.update("msg", msg.fmt(er.getMessage))
@@ -58,8 +59,8 @@ class CreateUserFile(pathFile: String){
   }
 
   def deletePath = {
-    val f = new File(pathFile)
     try{
+      if (!f.isFile)
      f.delete()
     }catch{
       case er: Exception  =>
@@ -68,6 +69,16 @@ class CreateUserFile(pathFile: String){
     }
   }
 
+  def addDateXmlFile(ext: String, name: String, nameFile: File){
+    val files = new XmlFiles
+    files.load()
+    val file = new XmlDescriptionFile(files)
+    file._uuid := ud
+    file._ext := ext
+    file._name := name
+    files.add(file)
+    files.saveTo(nameFile)
+  }
 }
 
 

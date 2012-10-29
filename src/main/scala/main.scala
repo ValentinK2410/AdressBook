@@ -12,6 +12,7 @@ import disk.DiskFileItemFactory
 class Main extends Router {
   'currentDate := new Date
 
+
   try {
     get("/")= sendRedirect("/book")
     sub("/book") = new BookRouter
@@ -118,10 +119,8 @@ class BookRouter extends Router {
     get("/uploads") = ftl("/uploads/add.ftl")
 
     post("/uploads").and(request.body.isMultipart) = {
-      val files = new XmlFiles
-      files.load()
-      val file = new XmlDescriptionFile(files)
 
+      val cdf = new CreateDirFile(new File(uploadsRoot + "/" + currentUser.id))
       val items = request.body.parseFileItems(
         new DiskFileItemFactory(10240, new File(uploadsRoot, "tmp"))
       )
@@ -133,8 +132,17 @@ class BookRouter extends Router {
 
       // process File
       ctx.getAs[FileItem]("file").map { fi =>
-        // upload file
-        fi.write(new File(uploadsRoot,param("date") + fi.getName))
+      // upload file
+        val index = fi.getName.indexOf(".")
+        cdf.createPath
+        cdf.addDateXmlFile(
+          fi.getName
+              .drop(index),
+          fi.getName,
+          new File(uploadsRoot +
+              "/" + currentUser.id +
+              "/" + "file.xml"))
+        fi.write(new File(cdf.nameFile))
 
       }
       ftl("/uploads/add.ftl")
