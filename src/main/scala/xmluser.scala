@@ -1,6 +1,6 @@
 package com.example
 import java.io.File
-
+ import org.apache.commons.io.FileUtils
 import ru.circumflex._, xml._ ,core._
 import core._
 import web._
@@ -29,13 +29,13 @@ class XmlDescriptionFile(@transient val files: XmlFiles)
 
 }
 
-class XmlFiles
+class XmlFiles(val fileName: File)
     extends ListHolder[XmlDescriptionFile]
     with XmlFile { files =>
 
-  def elemName = "files"
+   def elemName = "files"
 
-  def descriptorFile = new File(uploadsRoot, "file.xml")
+  def descriptorFile = fileName
 
   def read = {
     case "file" => new XmlDescriptionFile(files)
@@ -44,7 +44,8 @@ class XmlFiles
 }
 
 class CreateDirFile(f: File){
-  def ud = randomUUID
+  val _ud = randomUUID.toString
+  def ud = _ud
   def nameFile = f + "/" + ud
 
   def createPath = {
@@ -69,8 +70,24 @@ class CreateDirFile(f: File){
     }
   }
 
-  def addDateXmlFile(ext: String, name: String, nameFile: File){
-    val files = new XmlFiles
+  def delDataXmlFile(ext: String, name: String, uuid: String, nameFile: File, xmlNameFile: File, del: Boolean){
+    val files = new XmlFiles(xmlNameFile)
+    files.load()
+    val file = new XmlDescriptionFile(files)
+    file._uuid := uuid
+    file._ext := ext
+    file._name := name
+    files.delete(file)
+    files.save()
+   if (del){
+    FileUtils.deleteQuietly(nameFile)
+      FileUtils.deleteDirectory(f)
+    }
+
+  }
+
+  def addDataXmlFile(ext: String, name: String, nameFile: File){
+    val files = new XmlFiles(nameFile)
     files.load()
     val file = new XmlDescriptionFile(files)
     file._uuid := ud
@@ -79,6 +96,17 @@ class CreateDirFile(f: File){
     files.add(file)
     files.saveTo(nameFile)
   }
+
+
+  def readDateXmlFile(nameFile: File)={
+    val files = new XmlFiles(nameFile)
+    files.load()
+    files.children
+    //val uuid = files.children.map(_.uuid)
+    //val ext = files.children.map(_.ext)
+   // val name = files.children.map(_.name)
+   }
+
 }
 
 

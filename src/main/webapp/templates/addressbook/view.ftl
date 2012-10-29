@@ -3,7 +3,6 @@
 [#assign errors = flash['errors']!/]
 
 [#assign content]
-
 <div class="bo form-actions">
 <address>
   <p><strong>
@@ -43,8 +42,36 @@ ${contact.marcComment}
   </strong><p>
 ${contact.mail}
 </address>
- </div>
-<a  class="btn" href="/book">${msg['user.button.back']!}</a>
+  <hr>
+  <form class="form-horizontal"
+        action="/book/${contact.id}/download"
+        method="post">
+    <table >
+      [#if listFiles??]
+        [#list listFiles as e]
+          <tr>
+            <td>
+            ${e.name}
+              <input type="submit"
+                     value ="${msg['user.button.download']!}"/>
+                <input type="hidden"
+                       name="uuid"
+                       value="${e.uuid}"/>
+                <input type="hidden"
+                       name="name"
+                       value="${e.name}" />
+            </td>
+          </tr>
+        [/#list]
+      [/#if]
+    </table>
+  </form>
+</div>
+
+<a  class="btn" href="/book">
+  <i class="icon-arrow-left">
+
+  </i>${msg['user.button.back']!}</a>
 [/#assign]
 
 [#include "../layout.ftl"/]

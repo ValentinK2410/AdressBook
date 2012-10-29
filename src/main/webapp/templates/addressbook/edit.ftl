@@ -82,6 +82,33 @@
   </div>
 </form>
 
+<form class="form-horizontal"
+      action="/book/${contact.id}/delete"
+      method="post">
+  <table >
+    [#if listFiles??]
+      [#list listFiles as e]
+        <tr>
+          <td>
+          ${e.name}
+            <input type="submit"
+                   value ="${msg['user.button.delete']!}"/>
+            <input type="hidden"
+                   name="uuid"
+                   value="${e.uuid}"/>
+            <input type="hidden"
+                   name="name"
+                   value="${e.name}" />
+            <input type="hidden"
+                   name="ext"
+                   value="${e.ext}" />
+          </td>
+        </tr>
+      [/#list]
+    [/#if]
+  </table>
+</form>
+ ${title1!}
 [/#assign]
 
 [#include "../layout.ftl"/]
