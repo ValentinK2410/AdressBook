@@ -2,3 +2,4 @@
 target/
 *.db
 *.iml
+src/main/webapp/uploads

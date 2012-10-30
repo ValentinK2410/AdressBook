@@ -1,6 +1,6 @@
 package com.example
 import java.io.File
- import org.apache.commons.io.FileUtils
+import org.apache.commons.io.FileUtils
 import ru.circumflex._, xml._ ,core._
 import core._
 import web._
@@ -27,85 +27,57 @@ class XmlDescriptionFile(@transient val files: XmlFiles)
   val _name = attr("name")
   def name = _name.getOrElse("")
 
+  def file = new File(files.root, uuid + "." + ext)
+
 }
 
-class XmlFiles(val fileName: File)
+class XmlFiles(val book: Book)
     extends ListHolder[XmlDescriptionFile]
     with XmlFile { files =>
 
-   def elemName = "files"
+  def user = note.user()
+  val root = new File(uploadsRoot, user.id() + "/" + book.id())
 
-  def descriptorFile = fileName
+  def elemName = "files"
+
+  def descriptorFile =  new File(root, "file.xml")
 
   def read = {
     case "file" => new XmlDescriptionFile(files)
-
   }
+
+  def findByUuid(uuid: String) = children.find(_.uuid == uuid)
 }
 
-class CreateDirFile(f: File){
-  val _ud = randomUUID.toString
-  def ud = _ud
+class CreateDirFile(book: Book){
+  val ud = randomUUID
   def nameFile = f + "/" + ud
 
-  def createPath = {
-   try{
-    if (f.isDirectory)
+  val user = book.user()
+
+  def createPath() {
     f.mkdirs()
-  }catch{
-    case er: Exception  =>
-      flash.update("msg", msg.fmt(er.getMessage))
-      sendRedirect("/book/error")
-  }
   }
 
-  def deletePath = {
-    try{
-      if (!f.isFile)
-     f.delete()
-    }catch{
-      case er: Exception  =>
-        flash.update("msg", msg.fmt(er.getMessage))
-        sendRedirect("/book/error")
-    }
-  }
-
-  def delDataXmlFile(ext: String, name: String, uuid: String, nameFile: File, xmlNameFile: File, del: Boolean){
-    val files = new XmlFiles(xmlNameFile)
-    files.load()
-    val file = new XmlDescriptionFile(files)
-    file._uuid := uuid
-    file._ext := ext
-    file._name := name
-    files.delete(file)
-    files.save()
-   if (del){
-    FileUtils.deleteQuietly(nameFile)
+  def deletePath() {
+    if (f.isDirectory)
       FileUtils.deleteDirectory(f)
-    }
-
   }
 
-  def addDataXmlFile(ext: String, name: String, nameFile: File){
-    val files = new XmlFiles(nameFile)
-    files.load()
+  def delDataXmlFile(uuid: String) {
+    val fd = user.files.findByUuid(uuid)
+    fd.foreach(user.files.delete(_))
+    user.files.save()
+  }
+
+  def addDataXmlFile(ext: String, name: String) {
     val file = new XmlDescriptionFile(files)
     file._uuid := ud
     file._ext := ext
     file._name := name
     files.add(file)
-    files.saveTo(nameFile)
+    files.save()
   }
-
-
-  def readDateXmlFile(nameFile: File)={
-    val files = new XmlFiles(nameFile)
-    files.load()
-    files.children
-    //val uuid = files.children.map(_.uuid)
-    //val ext = files.children.map(_.ext)
-   // val name = files.children.map(_.name)
-   }
 
 }
 

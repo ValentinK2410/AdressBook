@@ -21,6 +21,8 @@ class User
   def PRIMARY_KEY = id
   def relation = User
 
+  val files = (new XmlFiles(this)).load()
+
 }
 
 object User

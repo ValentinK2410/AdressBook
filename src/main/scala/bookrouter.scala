@@ -20,7 +20,8 @@ class BookRouter extends Router {
 
   post("/?") = {
     try {
-      val b = Book.createFromBook()
+      val b = new Book
+      b.updateFromParams()
       b.user := currentUser
       b.save()
     } catch {
@@ -55,43 +56,25 @@ class BookRouter extends Router {
     } catch {
       case e: Exception => sendError(404)
     }
-     'contact := contact
+    'contact := contact
 
     if (contact.user() != currentUser)
       sendError(404)
 
     get("/?") = {
-      val path = new File(uploadsRoot
-          + "/"
-          + currentUser.id.get.get.toString
-          + "/"
-          + contact.id.get.get.toString)
-      if (path.isDirectory){
-        val cdf = new CreateDirFile(path)
-        'listFiles :=cdf.readDateXmlFile(
-          new File(path + "/" + "file.xml"))
-      }
-
+      'listFiles := currentUser.files.children
       ftl("/addressbook/view.ftl")
     }
 
     get("/edit") = {
-      val path = new File(uploadsRoot + "/"
-          + currentUser.id.get.get.toString + "/"
-          + contact.id.get.get.toString)
-      if (path.isDirectory){
-        val cdf = new CreateDirFile(path)
-        'listFiles :=cdf.readDateXmlFile(
-          new File(path + "/" + "file.xml"))
-      }
+      'listFiles := currentUser.files.children
       ftl("/addressbook/edit.ftl")
     }
 
     post("/edit") = {
       try {
-        val b = Book.createFromBook()
-        b.user := currentUser
-        b.save()
+        contact.updateFromParams()
+        contact.save()
       } catch {
         case e: ValidationException =>
           flash.update("errors", e.errors)
@@ -100,23 +83,10 @@ class BookRouter extends Router {
       flash.update("msg", msg.fmt("user.book.new.added"))
       sendRedirect("/book")
     }
-    post("/update") = {
-      try {
-        val b = Book.createFromBook()
-        b.id := param("id").toLong
-        b.user := currentUser
-        b.UPDATE()
-      } catch {
-        case e: ValidationException =>
-          flash.update("errors", e.errors)
-          sendRedirect("/book")
-      }
-      flash.update("msg", msg.fmt("user.book.update"))
-      sendRedirect("/book")
-    }
 
     get("/~delete")
         .and(request.body.isXHR) = ftl("/addressbook/delete.p.ftl")
+
     delete("/?") = {
       contact.DELETE_!()
       flash.update("msg", msg.fmt("user.book.deleted"))
@@ -126,12 +96,7 @@ class BookRouter extends Router {
     get("/uploads") = ftl("/uploads/add.ftl")
 
     post("/uploads").and(request.body.isMultipart) = {
-      val path = new File(uploadsRoot + "/"
-          + currentUser.id.get.get.toString + "/"
-          + contact.id.get.get.toString)
-      val pathXmlFile = new File(path
-          + "/" + "file.xml")
-      val cdf = new CreateDirFile(path)
+      val cdf = new CreateDirFile(contact)
       val items = request.body.parseFileItems(
         new DiskFileItemFactory(10240, new File(uploadsRoot, "tmp"))
       )
@@ -144,39 +109,26 @@ class BookRouter extends Router {
       // process File
       ctx.getAs[FileItem]("file").map { fi =>
       // add data xml file
-        val index = fi.getName.indexOf(".")
-        cdf.createPath
-        cdf.addDataXmlFile(
-          fi.getName
-              .drop(index),
-          fi.getName,
-          pathXmlFile)
+        val index = fi.getName.lastIndexOf(".")
+        cdf.createPath()
+
         fi.write(new File(cdf.nameFile)) // save user file
 
       }
       ftl("/uploads/add.ftl")
     }
-    post("/download") = {
-      response.contentType("text/plain")
-      val path = new File(uploadsRoot + "/"
-          + currentUser.id.get.get.toString + "/"
-          + contact.id.get.get.toString)
-      sendFile(new File(path, param("uuid")),param("name"))
+    post("/download/:uuid") = {
+      response.contentType("application/octet-stream")
+
+      val file = currentUser.files.findByUuid(param("uuid"))
+          .getOrElse(sendError(404))
+      sendFile(file.file, file.name)
       ftl("/uploads/list.ftl")
     }
     post("/delete") = {
-      val path = new File(uploadsRoot + "/"
-          + currentUser.id.get.get.toString + "/"
-          + contact.id.get.get.toString)
-      val pathXmlFile = new File(path
-          + "/" + "file.xml")
-
-        val cdf = new CreateDirFile(path)
-       val del = {param("name") == ""}
-      val pathh = new File(path + "/" + param("uuid"))
-       cdf.delDataXmlFile(param("ext"), param("name"), param("uuid"), new File(path + "/" + param("uuid")),pathXmlFile,del)
-      'title1 := param("ext") + "\n" + param("name") + "\n" + param("uuid") + "\n" + del.toString + "\n" + pathh
-      ftl("/addressbook/edit.ftl")
+      val cdf = new CreateDirFile(contact)
+      cdf.delDataXmlFile(contact)
+      sendRedirect("/book/" + contact.id() + "/edit")
     }
 
   }

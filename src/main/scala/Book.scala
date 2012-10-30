@@ -29,6 +29,15 @@ class Book
 
   def PRIMARY_KEY = id
   def relation = Book
+
+  def updateFromParams() {
+    b.firstName := param("bfirstname")
+    b.lastName := param("blastname")
+    b.telephone := param("btelephone")
+    b.address := param("baddress")
+    b.comment := param("bcomment")
+    b.mail := param("bemail")
+  }
 }
 
 object Book
@@ -49,17 +58,6 @@ object Book
         .FROM(bk)
         .add(bk.user IS user)
         .list()
-  }
-
-  def createFromBook() = {
-    val b = new Book
-    b.firstName := param("bfirstname")
-    b.lastName := param("blastname")
-    b.telephone := param("btelephone")
-    b.address := param("baddress")
-    b.comment := param("bcomment")
-    b.mail := param("bemail")
-    b
   }
 
 }
