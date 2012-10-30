@@ -31,6 +31,7 @@ class Book
   def relation = Book
 
   def updateFromParams() {
+    val b = new Book
     b.firstName := param("bfirstname")
     b.lastName := param("blastname")
     b.telephone := param("btelephone")
@@ -38,6 +39,8 @@ class Book
     b.comment := param("bcomment")
     b.mail := param("bemail")
   }
+
+  lazy val files = (new XmlFiles(this)).load()
 }
 
 object Book

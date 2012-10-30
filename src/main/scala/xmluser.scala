@@ -27,17 +27,16 @@ class XmlDescriptionFile(@transient val files: XmlFiles)
   val _name = attr("name")
   def name = _name.getOrElse("")
 
-  def file = new File(files.root, uuid + "." + ext)
+  def file = new File(files.root, uuid)
 
 }
 
-class XmlFiles(val book: Book)
+class XmlFiles(@transient val book: Book)
     extends ListHolder[XmlDescriptionFile]
     with XmlFile { files =>
-
-  def user = note.user()
+  def ud = randomUUID
+  def user = book.user()
   val root = new File(uploadsRoot, user.id() + "/" + book.id())
-
   def elemName = "files"
 
   def descriptorFile =  new File(root, "file.xml")
@@ -47,39 +46,9 @@ class XmlFiles(val book: Book)
   }
 
   def findByUuid(uuid: String) = children.find(_.uuid == uuid)
+
+  def deleteByUuid(uuid:String){
+    val fd = findByUuid(uuid)
+    fd.foreach(delete(_))
+  }
 }
-
-class CreateDirFile(book: Book){
-  val ud = randomUUID
-  def nameFile = f + "/" + ud
-
-  val user = book.user()
-
-  def createPath() {
-    f.mkdirs()
-  }
-
-  def deletePath() {
-    if (f.isDirectory)
-      FileUtils.deleteDirectory(f)
-  }
-
-  def delDataXmlFile(uuid: String) {
-    val fd = user.files.findByUuid(uuid)
-    fd.foreach(user.files.delete(_))
-    user.files.save()
-  }
-
-  def addDataXmlFile(ext: String, name: String) {
-    val file = new XmlDescriptionFile(files)
-    file._uuid := ud
-    file._ext := ext
-    file._name := name
-    files.add(file)
-    files.save()
-  }
-
-}
-
-
-

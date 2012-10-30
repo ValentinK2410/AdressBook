@@ -90,25 +90,22 @@
       [#list listFiles as e]
         <tr>
           <td>
-          ${e.name}
-            <input type="submit"
-                   value ="${msg['user.button.delete']!}"/>
+          <label class="checkbox">
+              <input type="checkbox">${e.name}
+            </label>
             <input type="hidden"
                    name="uuid"
                    value="${e.uuid}"/>
-            <input type="hidden"
-                   name="name"
-                   value="${e.name}" />
-            <input type="hidden"
-                   name="ext"
-                   value="${e.ext}" />
-          </td>
+
+            </td>
         </tr>
       [/#list]
+      <input type="submit"
+             value ="${msg['user.button.delete']!}"/>
     [/#if]
   </table>
 </form>
- ${title1!}
+
 [/#assign]
 
 [#include "../layout.ftl"/]

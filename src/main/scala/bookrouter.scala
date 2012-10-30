@@ -62,12 +62,12 @@ class BookRouter extends Router {
       sendError(404)
 
     get("/?") = {
-      'listFiles := currentUser.files.children
+      'listFiles := contact.files.children
       ftl("/addressbook/view.ftl")
     }
 
     get("/edit") = {
-      'listFiles := currentUser.files.children
+      'listFiles := contact.files.children
       ftl("/addressbook/edit.ftl")
     }
 
@@ -96,7 +96,6 @@ class BookRouter extends Router {
     get("/uploads") = ftl("/uploads/add.ftl")
 
     post("/uploads").and(request.body.isMultipart) = {
-      val cdf = new CreateDirFile(contact)
       val items = request.body.parseFileItems(
         new DiskFileItemFactory(10240, new File(uploadsRoot, "tmp"))
       )
@@ -109,26 +108,33 @@ class BookRouter extends Router {
       // process File
       ctx.getAs[FileItem]("file").map { fi =>
       // add data xml file
-        val index = fi.getName.lastIndexOf(".")
-        cdf.createPath()
+        contact.files.root.mkdirs()// create are dir and file users
+        val file = contact.files.read("file")
+        val ud = contact.files.ud // randomUUID
+        file._uuid := ud // add data in file.xml
+        file._name := fi.getName // add data in file.xml
+        contact.files.add(file)
+        contact.files.save()
 
-        fi.write(new File(cdf.nameFile)) // save user file
+        fi.write(new File(contact.files.root, ud)) // save user file
 
       }
-      ftl("/uploads/add.ftl")
+      sendRedirect(prefix + "/uploads")
     }
     post("/download/:uuid") = {
       response.contentType("application/octet-stream")
 
-      val file = currentUser.files.findByUuid(param("uuid"))
+      val file = contact.files.findByUuid(param("uuid"))
           .getOrElse(sendError(404))
       sendFile(file.file, file.name)
       ftl("/uploads/list.ftl")
     }
     post("/delete") = {
-      val cdf = new CreateDirFile(contact)
-      cdf.delDataXmlFile(contact)
-      sendRedirect("/book/" + contact.id() + "/edit")
+     val del = request.params.list("uuid")
+      'size :=del
+     del.foreach(contact.files.deleteByUuid(_))
+      contact.files.save()
+      sendRedirect(prefix + "/edit")
     }
 
   }

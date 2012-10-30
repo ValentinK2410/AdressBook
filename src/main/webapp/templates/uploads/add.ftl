@@ -17,9 +17,7 @@
 
   <INPUT TYPE="submit"
          VALUE="Send File">
-  <input type="hidden"
-         value="${currentDate?string("yyyyhhmmss")}"
-         name="date">
+
 </FORM>
 <a class="btn"
    href="/book">
